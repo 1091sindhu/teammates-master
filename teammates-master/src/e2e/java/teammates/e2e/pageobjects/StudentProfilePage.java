@@ -160,8 +160,18 @@ public class StudentProfilePage extends AppPage {
     }
 
     public void verifyPhotoSize(String height, String width) {
+        if (height.getHeight() > width.getWidth()) {
+            float percent = (((float) maxVal) / height.getHeight()) * 100;
+            int scaleDown = Math.round(start.getWidth() * percent / 100);
+            return new Dimension(scaleDown, maxVal);
+        } else if (start.getWidth() > start.getHeight()) {
+            float percent = (((float) maxVal) / start.getWidth()) * 100;
+            int scaleDown = Math.round(start.getHeight() * percent / 100);
+        String actualHeight = browser.driver.findElement(By.className("profile-pic")).getCssValue("height");
         assertEquals(height, browser.driver.findElement(By.className("profile-pic")).getCssValue("height"));
+        float imageHeight = Float.parseFloat(actualHeight.substring(0, actualHeight.length() - 2));
         assertEquals(width, browser.driver.findElement(By.className("profile-pic")).getCssValue("width"));
+
         click(uploadEditModal.findElement(By.className("close")));
     }
 
